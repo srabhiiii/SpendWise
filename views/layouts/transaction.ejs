@@ -8,13 +8,12 @@
     <title>Document</title>
 </head>
 <body>
-    <%-  include("../includes/nav2.ejs",{username:transactions[0].username}) %>
+    <%- include("../includes/nav2.ejs",{username:username}) %>
     <% if (transactions.length > 0) { %>
         <h1 class="mainline"><%= transactions[0].username %>'s Transactions</h1>
-    <% } else { %>
-        <h1>No transactions found</h1>
     <% } %>
     
+    <% if (transactions.length > 0) { %>
     <div class="filter balance" style="display: flex;">
         <form method="get" action="/<%=transactions[0].username%>/transactions" style="display: flex;">
             <label for="fliterType" style="color: rgb(255, 255, 255);">Choose Category :</label>
@@ -76,6 +75,13 @@
         
       </table>
     </div>
+    <%} else{%>
+        <div class="norec">
+        <h1 >OOPS...</h1>
+        <br>
+        <h1>No Record Found</h1>
+        </div>
+    <%}%>
     <script src="https://kit.fontawesome.com/f798946187.js" crossorigin="anonymous"></script>
 </body>
 </html>

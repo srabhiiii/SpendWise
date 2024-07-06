@@ -10,6 +10,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser"); // Add this to parse request bodies
 const flash=require("connect-flash");
 const moment=require("moment");
+const {isloggedin}=require("./loggin.js");
 const router=express.Router();
 const app = express();
 
@@ -77,10 +78,16 @@ app.get("/login",(req,res)=>{
     res.render("../views/layouts/login.ejs");
 });
 app.post("/login",passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),async(req,res)=>{
-    console.log("logged in");
-    const username=req.body.username;
-    console.log(username);
-    res.redirect(`/${username}/dashboard`);
+    try{
+        console.log("logged in");
+        const username=req.body.username;
+        console.log(username);
+        res.redirect(`/${username}/dashboard`);
+    }catch(err){
+        req.flash("error",err.message);
+        req.redirect("/login");
+    }
+    
 })
 //signup code
 app.get("/signup",(req,res)=>{
@@ -90,9 +97,14 @@ app.post("/signup", async(req,res)=>{
     try{
     let {username,email,password}=req.body;
     const newUser=new User({email,username});
-    await User.register(newUser,password);
-    console.log("registered");
+    const reguser=await User.register(newUser,password);
+    
     req.flash("success","user was registered");
+    req.login(reguser,(err)=>{
+        if(err){
+            next(err);
+        }
+    });
     res.redirect(`/${username}/dashboard`);
     }catch(err){
         console.log("username already exists");
@@ -103,29 +115,44 @@ app.post("/signup", async(req,res)=>{
 })
 
 //dashboard
-app.get("/:username/dashboard",async (req,res)=>{
-    const username=req.params.username;
-    const transactions=await Trans.find({username:username});
-    const top3expense=await Trans.aggregate([
-        {$match:{username:username,type:'Expense'}},
-        {$group:{_id:"$category",totalamount:{$sum:"$amount"}}},
-        {$sort:{totalamount:-1}},
-        {$limit:3}
-       ]);
-    
-    const top3income=await Trans.aggregate([
-        {$match:{username:username,type:'income'}},
-        {$group:{_id:"$category",totalamount:{$sum:"$amount"}}},
-        {$sort:{totalamount:-1}},
-        {$limit:3}
-       ]);
-    
-    
-    res.render("../views/layouts/dashboard.ejs",{transactions:transactions,top3income:top3income,top3expense:top3expense});
+app.get("/:username/dashboard",isloggedin, async (req, res) => {
+    try {
+        const username = req.params.username;
+        
+        // Fetch transactions
+        const transactions = await Trans.find({ username: username });
+        if(transactions.length==0){
+            res.render("../views/layouts/dashboard2.ejs",{username:username});
+        }else{
+        // Fetch top 3 expenses
+        const top3expense = await Trans.aggregate([
+            { $match: { username: username, type: 'Expense' } },
+            { $group: { _id: "$category", totalamount: { $sum: "$amount" } } },
+            { $sort: { totalamount: -1 } },
+            { $limit: 3 }
+        ]);
+
+        // Fetch top 3 incomes
+        const top3income = await Trans.aggregate([
+            { $match: { username: username, type: 'income' } },
+            { $group: { _id: "$category", totalamount: { $sum: "$amount" } } },
+            { $sort: { totalamount: -1 } },
+            { $limit: 3 }
+        ]);
+
+        // Render dashboard view with data
+        res.render("../views/layouts/dashboard.ejs", { transactions: transactions, top3income: top3income, top3expense: top3expense });
+    }
+    } catch (error) {
+        // Handle errors
+        console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
 //analytics
 //analytics
-app.get("/:username/analytics",async (req,res)=>{
+app.get("/:username/analytics",isloggedin,async (req,res)=>{
     const filterdays = req.query.filterChoice;
     var startDate = req.query.start_date;
     var endDate = req.query.end_date ;
@@ -147,7 +174,7 @@ app.get("/:username/analytics",async (req,res)=>{
 
         const transactions = await Trans.find(query);
         
-        res.render("../views/layouts/analytics.ejs", {
+        res.render("../views/layouts/analytics.ejs", {username:req.params.username,
             transactions: transactions,
             filterChoice: filterdays === undefined ? "none" : req.query.filterChoice,
             start_date:startDate!==undefined?startDate:undefined,
@@ -163,7 +190,7 @@ app.get("/:username/analytics",async (req,res)=>{
 
 //transaction
 //TABLE OF TRANSACTIONS
-app.get("/:username/transactions", async (req, res) => {
+app.get("/:username/transactions",isloggedin, async (req, res) => {
     const filterdays = req.query.filterChoice;
     const filtertype = req.query.filterType;
     console.log(req.query.start_date);
@@ -197,7 +224,7 @@ app.get("/:username/transactions", async (req, res) => {
         }
         const transactions = await Trans.find(query);
         
-        res.render("../views/layouts/transaction.ejs", {
+        res.render("../views/layouts/transaction.ejs", {username:req.params.username,
             transactions: transactions,
             filterChoice: filterdays === undefined ? "none" : req.query.filterChoice,
             filterType: filtertype === undefined ? "none" : req.query.filterType,
@@ -210,11 +237,11 @@ app.get("/:username/transactions", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-app.get("/:username/addexp",(req,res)=>{
+app.get("/:username/addexp",isloggedin,(req,res)=>{
     const username=req.params.username;
     res.render("../views/layouts/addexp.ejs",{username:username});
 });
-app.get("/:username/addinc",(req,res)=>{
+app.get("/:username/addinc",isloggedin,(req,res)=>{
     const username=req.params.username;
     res.render("../views/layouts/addinc.ejs",{username:username});
 });
@@ -235,7 +262,7 @@ app.post("/:username/addinc",async (req,res)=>{
     res.redirect(`/${username}/dashboard`);
 });
 
-app.get("/:username/:transid",async (req,res)=>{
+app.get("/:username/:transid",isloggedin,async (req,res)=>{
     try{
         const transaction= await Trans.findOne({_id:req.params.transid});
         

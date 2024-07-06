@@ -46,19 +46,25 @@
             <tr >
                 <th colspan="2" style= "background-color:rgb(92, 0, 179);color: rgb(250, 248, 251);">Top Expense Categories</th>
             </tr>
+            <%if(top3expense.length!=0){%>
             <tr>
                 <th style= "color:rgb(92, 0, 179);background-color: rgb(250, 248, 251);">Category</th>
                 <th style= "color:rgb(92, 0, 179);background-color: rgb(250, 248, 251);">Total Amount Spent</th>
             </tr>
+            <% } else { %>
+                <th style= "color:rgb(92, 0, 179);background-color: rgb(32, 31, 33);">No Expenses</th>
+            <%}%>
         </thead>
         <tbody>
+            <%if(top3expense.length!=0){%>
             <% for(transaction of top3expense) {%>
                 <tr>
                     <td><%= transaction._id %></td>
                     <td><%= transaction.totalamount %></td>
                 </tr>
 
-            <%}%>
+            <%} }%>
+            
         </tbody>
         
       </table>
@@ -69,20 +75,25 @@
             <tr>
                 <th colspan="2" style= "background-color:rgb(92, 0, 179);color: rgb(250, 248, 251);">Top Income Categories</th>
             </tr>
+            <%if(top3income.length!=0){%>
             <tr>
                 
                 <th style= "color:rgb(92, 0, 179);background-color: rgb(250, 248, 251);">Category</th>
                 <th style= "color:rgb(92, 0, 179);background-color: rgb(250, 248, 251);">Total Amount Spent</th>
             </tr>
+            <% } else { %>
+                <th style= "color:rgb(92, 0, 179);background-color: rgb(32, 31, 33);">No Expenses</th>
+            <%}%>
         </thead>
         <tbody>
+            <%if(top3income.length!=0){%>
             <% for(transaction of top3income) {%>
                 <tr>
                     <td><%= transaction._id %></td>
                     <td><%= transaction.totalamount %></td>
                 </tr>
 
-            <%}%>
+            <%}}%>
         </tbody>
         
       </table>
