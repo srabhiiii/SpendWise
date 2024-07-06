@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <%- include("../includes/nav2.ejs",{username:transactions[0].username}) %>
+    <%-  include("../includes/nav2.ejs",{username:transactions[0].username}) %>
     <% if (transactions.length > 0) { %>
         <h1 class="mainline"><%= transactions[0].username %>'s Transactions</h1>
     <% } else { %>
