@@ -1,0 +1,30 @@
+.navbar{
+    height: 50px;
+}
+.custom-btn{
+    margin-right:30px;
+   
+   
+}
+
+.btn2{
+    width:80px;
+}
+.h2{
+    margin-left: 30px;
+}
+body{
+    background-color: rgb(32, 31, 33);
+    
+}
+.info{
+    color: azure;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    margin-top: 5%;
+   
+}
+   
+

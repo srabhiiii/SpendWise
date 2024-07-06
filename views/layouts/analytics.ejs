@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/analyze.css" >
+    <title>Document</title>
+</head>
+<body>
+    <%- include("../includes/nav2.ejs",{username:transactions[0].username}) %>
+    <div class="mainline">
+        <h1 ><%=transactions[0].username%>'s Transaction Analysis</h1>
+    </div>
+    <div class="filter">
+        <form method="get" action="/<%=transactions[0].username%>/analytics">
+        <select id="fliterChoice" name="filterChoice" class="filterChoice" onchange="this.form.submit()">
+            <option value="none" <% if (filterChoice === 'none') { %> selected <% } %>>ALL</option>
+        <option value="7" <% if (filterChoice === '7') { %> selected <% } %>>Last 1 week</option>
+        <option value="30" <% if (filterChoice === '30') { %> selected <% } %>>Last 1 month</option>
+        <option value="365" <% if (filterChoice === '365') { %> selected <% } %>>Last 1 year</option>
+        <option value="custom" <% if (filterChoice === 'custom') { %> selected <% } %>>custom</option>
+        <% if(filterChoice==='custom'){%> 
+            <div>
+                
+                    <input type="hidden" name="filtercustom" value="custom" >
+                    <input type="date" name="start_date" value="<%= start_date %>">
+                    <input type="date" name="end_date" value="<%= end_date %>">
+                    <button type="submit">Apply</button>
+                
+            </div>
+        <% } %>
+        </select>
+        </form>
+    </div>
+    
+        <br>
+        <br>
+        <% 
+       
+        let incometran = transactions.filter(ele => ele.type === 'income'); 
+        let expensetran = transactions.filter(ele => ele.type === 'Expense');
+        let incomePercentage = (incometran.length * 100) / transactions.length;
+        let expensePercentage = (expensetran.length * 100) / transactions.length;
+
+        let totincome=incometran.reduce((sum,ele)=>sum+ele.amount,0);
+        let totexpense=expensetran.reduce((sum,ele)=>sum+ele.amount,0);
+        let incvalper=(totincome*100)/(totincome+totexpense);
+        let expvalper=Math.round((totexpense*100)/(totincome+totexpense));
+        //-------------------------------------------------------------------------
+        let rentval=expensetran.reduce((sum,ele)=>{return ele.category==='Rent'?sum+ele.amount:sum;},0);
+        let rentper=(rentval*100)/totexpense;
+        let entertainmentval=expensetran.reduce((sum,ele)=>{return ele.category==='Entertainment'?sum+ele.amount:sum;},0);
+        let enterper=(entertainmentval*100)/totexpense;
+        let medval=expensetran.reduce((sum,ele)=>{return ele.category==='Medical'?sum+ele.amount:sum;},0);
+        let medper=(medval*100)/totexpense;
+        let foodval=expensetran.reduce((sum,ele)=>{return ele.category==='Food'?sum+ele.amount:sum;},0);
+        let foodper=(foodval*100)/totexpense;
+        let groceryval=expensetran.reduce((sum,ele)=>{return ele.category==='Grocery'?sum+ele.amount:sum;},0);
+        let groceryper=(groceryval*100)/totexpense;
+        let transval=expensetran.reduce((sum,ele)=>{return ele.category==='Transport'?sum+ele.amount:sum;},0);
+        let transper=(transval*100)/totexpense;
+        let g1val=expensetran.reduce((sum,ele)=>{return ele.category==='Gifts'?sum+ele.amount:sum;},0);
+        let g1per=(g1val*100)/totexpense;
+        let uval=expensetran.reduce((sum,ele)=>{return ele.category==='Utilities'?sum+ele.amount:sum;},0);
+        let uper=(uval*100)/totexpense;
+        let o1val=expensetran.reduce((sum,ele)=>{return ele.category==='Others'?sum+ele.amount:sum;},0);
+        let o1per=(o1val*100)/totexpense;
+        //------------------------------------------------------------------------------------------------------
+        
+        
+
+        let salval=incometran.reduce((sum,ele)=>{return ele.category==='Salary'?sum+ele.amount:sum;},0);
+        let salper=(salval*100)/totincome;
+        let wval=incometran.reduce((sum,ele)=>{return ele.category==='Wages'?sum+ele.amount:sum;},0);
+        let wper=(wval*100)/totincome;
+        let bval=incometran.reduce((sum,ele)=>{return ele.category==='Bonus'?sum+ele.amount:sum;},0);
+        let bper=(bval*100)/totincome;
+        let fval=incometran.reduce((sum,ele)=>{return ele.category==='Freelance'?sum+ele.amount:sum;},0);
+        let fper=(fval*100)/totincome;
+        let rval=incometran.reduce((sum,ele)=>{return ele.category==='Rental'?sum+ele.amount:sum;},0);
+        let rper=(rval*100)/totincome;
+        let refval=incometran.reduce((sum,ele)=>{return ele.category==='Refunds'?sum+ele.amount:sum;},0);
+        let refper=(refval*100)/totincome;
+        let g2val=incometran.reduce((sum,ele)=>{return ele.category==='Gifts'?sum+ele.amount:sum;},0);
+        let g2per=(g1val*100)/totincome;
+        let o2val=incometran.reduce((sum,ele)=>{return ele.category==='Others'?sum+ele.amount:sum;},0);
+        let o2per=(o2val*100)/totincome;
+
+    %>
+
+    <br>
+    
+    <div class="circular-progress">
+        <div class="progbox">
+    <div class="progress1">
+        
+        <div class="pro2">
+            <span class="pro1val firstinner" style="color: red;"><%=expvalper%>%</span>
+        </div>
+        <div class="expinfo">
+            <span ><b>Total Expense : <%=totexpense%></b></span>
+            <br>
+            <span ><b>Expense Transactions : <%=expensetran.length%></b></span>
+        </div>
+        
+    </div>
+    </div>
+    <br>
+    <div class="progbox">
+    <div class="progress2">
+        <div class="pro2">
+            <span class="pro2val secondinner" style="color: green;"><%=100-expvalper%>%</span>
+        </div>
+        <div class="incinfo">
+            <span ><b>Total Income : <%=totincome%></b></span>
+            <br>
+            <span ><b>Incomes Transactions : <%=incometran.length%></b></span>
+        </div>
+    </div>
+    </div>
+   
+</div>
+<br>
+<br>
+<div class="dis">
+<div class="otherprog progress-main">
+   
+    <h1 class="heading">EXPENSE</h1>
+    <div class="expenseanal">
+        <%if(rentper!==0){%>
+            <label for="rent">Rent</label>
+            <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            <div id="rent"class="progress-bar bg-danger" style="width: <%=rentper%>%"></div>
+            </div>
+        <%}%>
+
+    <%if(enterper!==0){%>
+    <label for="entertainment">Entertainment</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="entertainment"class="progress-bar bg-danger" style="width: <%=enterper%>%"></div>
+    </div>
+    <%}%>
+
+    <%if(medper!==0){%>
+        <label for="medical">Medical</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="medical"class="progress-bar bg-danger" style="width: <%=medper%>%"></div>
+        </div>
+    <%}%>
+
+    <%if(foodper!==0){%>
+        <label for="food">Food</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="food"class="progress-bar bg-danger" style="width: <%=foodper%>%"></div>
+        </div>
+    <%}%>
+
+    <%if(groceryper!==0){%>
+        <label for="grocery">Grocery</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="grocery"class="progress-bar bg-danger" style="width: <%=groceryper%>%"></div>
+        </div>
+    <%}%>
+
+    <%if(transper!==0){%>
+        <label for="trans">Transport</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="trans"class="progress-bar bg-danger" style="width: <%=transper%>%"></div>
+        </div>
+    <%}%>
+
+    <%if(g1per!==0){%>
+        <label for="g1">Gifts</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="g1"class="progress-bar bg-danger" style="width: <%=g1per%>%"></div>
+        </div>
+    <%}%>
+
+    <%if(uper!==0){%>
+        <label for="u">Utilities</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="u"class="progress-bar bg-danger" style="width: <%=uper%>%"></div>
+        </div>
+    <%}%>
+
+    <%if(o1per!==0){%>
+        <label for="o1">Others</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="o1"class="progress-bar bg-danger" style="width: <%=o1per%>%"></div>
+        </div>
+    <%}%>
+
+</div>
+</div>
+
+<div class="otherprog progress-main">
+<h1 class="heading">INCOME</h1>
+<div class="incomeanal">
+    <%if(salper!==0){%>
+        <label for="salary">Salary</label>
+        <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+        <div id="salary"class="progress-bar bg-success" style="width: <%=salper%>%"></div>
+        </div>
+    <%}%>
+
+<%if(wper!==0){%>
+<label for="wage">Wages</label>
+<div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+<div id="wage"class="progress-bar bg-success" style="width: <%=wper%>%"></div>
+</div>
+<%}%>
+
+<%if(bper!==0){%>
+    <label for="bonus">Bonus</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="bonus"class="progress-bar bg-success" style="width: <%=bper%>%"></div>
+    </div>
+<%}%>
+
+<%if(fper!==0){%>
+    <label for="freelance">Freelance</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="freelance"class="progress-bar bg-success" style="width: <%=fper%>%"></div>
+    </div>
+<%}%>
+
+<%if(rper!==0){%>
+    <label for="rental">Rental</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="rental"class="progress-bar bg-success" style="width: <%=rper%>%"></div>
+    </div>
+<%}%>
+
+<%if(refper!==0){%>
+    <label for="refunds">Transport</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="refunds"class="progress-bar bg-success" style="width: <%=refper%>%"></div>
+    </div>
+<%}%>
+
+<%if(g1per!==0){%>
+    <label for="g1">Gifts</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="g1"class="progress-bar bg-success" style="width: <%=g1per%>%"></div>
+    </div>
+<%}%>
+
+<%if(o2per!==0){%>
+    <label for="o2">Others</label>
+    <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+    <div id="o2"class="progress-bar bg-success" style="width: <%=o2per%>%"></div>
+    </div>
+<%}%>
+
+</div>
+
+</div>
+</div>
+        
+    
+   
+        
+   
+        
+<script src="/animate.js"></script> 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    
+</body>
+</html>

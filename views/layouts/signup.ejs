@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd/dist/antd.css"><script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.js"></script>;
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Document</title>
+</head>
+<body>
+    <%if(success) {%>
+        <div class="alert alert-success">
+            <%= success %>
+        </div>
+    <%}%>
+    <%if(error){%>
+        <div class="alert alert-danger">
+            <%= error %>
+        </div>
+    <%}%>
+    <div class="container">
+        <h1 style="color: blueviolet;"><strong>SPENDWISE</strong></h1>
+        <h1 style="color: rgb(206, 170, 240);" >Signup</h1>
+        
+        <form method="POST" action="/signup">
+            <input type="text" name="username" placeholder="Enter Username">
+            <input type="text" name="email" placeholder="Enter Email Id">
+            <input type="password" name="password" placeholder="Enter password">
+            <button type="submit">SignUp</button>
+            <p>Already Have an Account ? <a href="/login">Login</a></p>
+        </form>
+    </div>
+</body>
+</html>
+</body>
+</html>

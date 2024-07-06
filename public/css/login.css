@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif; /* Use a common font for better compatibility */
+    background-color: rgb(32, 31, 33); /* Set a background color */
+    
+}
+    
+
+.container {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    
+    width: 400px; /* Set the width of the container */
+    margin: 5% auto; /* Center the container horizontally */
+    background-color: rgba(185, 184, 185, 0.251); 
+    
+    padding: 20px; /* Add some padding */
+    border-radius: 5px; /* Add rounded corners */
+    /* Add a shadow for better visual appeal */
+}
+
+form {
+    color: rgb(255, 255, 255) ;
+    display: flex;
+    justify-content: center;
+    flex-direction: column; 
+}
+
+input[type="text"],
+input[type="password"],
+button {
+    padding: 10px; /* Add padding to input fields and button */
+    margin-bottom: 10px; /* Add margin between form elements */
+    border: 1px solid #ccc; /* Add a border */
+    border-radius: 3px; /* Add rounded corners */
+}
+
+button {
+    background-color: rgb(172, 120, 220); /* Set button background color */
+    color: #fffeff; /* Set button text color */
+    border: none; /* Remove default button border */
+    cursor: pointer; /* Change cursor on hover */
+}
+.logo{
+    flex:1;
+    padding:20px;
+}
+.logo img {
+    max-width: 100%;
+    height: auto;
+}
+.logo img {
+    max-width: 100%; /* Ensure the image doesn't exceed the width of its container */
+    height: auto; /* Maintain aspect ratio */
+}
+button:hover {
+    background-color: #47016d; /* Darken button background color on hover */
+}

@@ -1,0 +1,50 @@
+body{
+    background-color: rgb(32, 31, 33) ;
+    margin-bottom:10px;
+}
+.viewtrans{
+    margin: 0 auto; /* Center the container horizontally */
+    width: 80%;
+   
+    
+}
+.mainline{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: rgb(92, 0, 178);
+    margin-top: 5%;
+    margin-bottom:5%;
+}
+.table{
+    width:100% ;
+    border-collapse: collapse;
+  
+}
+select{
+    background-color: rgb(91, 0, 179);
+    border-color: rgb(0, 0, 0);
+    color: azure;
+    margin: 2px;
+    margin-bottom: 5px;
+    margin-bottom: 0;
+}
+.filter {
+    margin-left: 10%;
+    align-items: center;
+    padding-bottom: 2px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.custom-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+.actions form{
+    display: inline;
+    margin-left: 10px;
+}
+

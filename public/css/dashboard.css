@@ -1,0 +1,45 @@
+body{
+    background-color: rgb(32, 31, 33);
+}
+.mainline{
+    color: rgb(92, 0, 179);
+    display: flex;
+    justify-content: center;
+
+    
+}
+.first{
+    margin-top: 80px;
+    margin-bottom: 2%;
+    
+}
+.container{
+    color:rgb(91, 0, 176);
+    display: flex;
+    justify-content: space-around;
+    background-color: rgb(91, 0, 177);
+    width: 98%;
+    height: 30%;
+}
+.box{
+    width:32%;
+    height:15%;
+    text-align: center;
+    background-color: rgb(32, 31, 33);
+    border-radius: 20px;
+    padding: 20px;
+    font-size: 120%;
+    border-color:  rgb(92, 0, 179);
+}
+.history{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5%;
+    
+}
+.table{
+    margin:2%;
+    width: 50%;
+   
+}
