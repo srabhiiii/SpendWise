@@ -2,6 +2,7 @@ const express = require("express");
 const ejsMate = require("ejs-mate");
 const path = require("path");
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
 const User = require("./model/usermodel.js"); // Use capital for model
 const Trans=require("./model/transacmodel.js");
 const passport = require("passport");
@@ -10,7 +11,6 @@ const session = require("express-session");
 const bodyParser = require("body-parser"); // Add this to parse request bodies
 const flash=require("connect-flash");
 const moment=require("moment");
-const {isloggedin}=require("./loggin.js");
 const router=express.Router();
 const app = express();
 
@@ -31,6 +31,10 @@ const sessionOptions = {
     secret: 'yourSecretKey', // Change this to a strong secret key
     resave: false,
     saveUninitialized: false,
+    store:MongoStore.create({//this is so that session persists even after refreshing 
+        mongoUrl:mongo_url,
+        collectionName:'sessions'
+    }),
     cookie: { secure: false } // Set secure to true if using HTTPS
 };
 
@@ -52,11 +56,27 @@ app.use(bodyParser.urlencoded({ extended: true })); // Use body-parser
 
 //middleware for flash message
 app.use(flash());
+
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
     next();
 })
+//middleware for authentication
+const isloggedin =async (req,res,next)=>{
+    if(!req.isAuthenticated()){
+        return res.redirect("/login");
+    }
+    const u=User.findOne({username:req.params.username});
+    if(!u){
+        return res.redirect("/login");
+    }
+    if(req.user.username!==req.params.username){
+        res.redirect("/login");
+    }
+    
+    next();
+}
 app.get("/", (req, res) => {
     res.render("layouts/landingpage"); // Ensure this path is correct
 });
@@ -113,7 +133,21 @@ app.post("/signup", async(req,res)=>{
     }
 
 })
-
+app.get("/logout",(req,res)=>{
+    req.logout((err)=>{
+        if(err){
+            next(err);
+        }
+        req.session.destroy((err)=>{
+            if(err){
+                next(err);
+            }
+            res.redirect("/");
+            
+        });
+        
+    });
+});
 //dashboard
 app.get("/:username/dashboard",isloggedin, async (req, res) => {
     try {
