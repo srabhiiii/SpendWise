@@ -193,6 +193,7 @@ app.get("/:username/analytics",isloggedin,async (req,res)=>{
 app.get("/:username/transactions",isloggedin, async (req, res) => {
     const filterdays = req.query.filterChoice;
     const filtertype = req.query.filterType;
+    const filtercat=req.query.filtercat;
     console.log(req.query.start_date);
     console.log(filterdays);
     console.log("   ");
@@ -222,12 +223,17 @@ app.get("/:username/transactions",isloggedin, async (req, res) => {
         if (filtertype !== undefined && filtertype !== "none") {
             query.type = filtertype;
         }
+        if (filtercat !== undefined && filtercat !== "none") {
+            query.category = filtercat;
+        }
         const transactions = await Trans.find(query);
         
-        res.render("../views/layouts/transaction.ejs", {username:req.params.username,
+        res.render("../views/layouts/transaction.ejs", {
+            username:req.params.username,
             transactions: transactions,
             filterChoice: filterdays === undefined ? "none" : req.query.filterChoice,
             filterType: filtertype === undefined ? "none" : req.query.filterType,
+            filtercat:filtertype==undefined?"none":req.query.filtercat,
             start_date:startDate!==undefined ?startDate: undefined,
             end_date:endDate!==undefined ? endDate :undefined,
         });

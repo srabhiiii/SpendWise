@@ -16,11 +16,37 @@
     <% if (transactions.length > 0) { %>
     <div class="filter balance" style="display: flex;">
         <form method="get" action="/<%=transactions[0].username%>/transactions" style="display: flex;">
-            <label for="fliterType" style="color: rgb(255, 255, 255);">Choose Category :</label>
+            <label for="fliterType" style="color: rgb(255, 255, 255);">Choose Type :</label>
             <select id="fliterType" name="filterType" class="filterType filter2 " onchange="this.form.submit()">
                 <option value="none" <% if (filterType === 'none') { %> selected <% } %>>ALL</option>
             <option value="income" <% if (filterType === 'income') { %> selected <% } %>>INCOME</option>
             <option value="Expense" <% if (filterType === 'Expense') { %> selected <% } %>>EXPENSE</option>
+             </select>
+
+             <label for="flitercat" style="color: rgb(255, 255, 255);">Choose Category :</label>
+            <select id="flitercat" name="filtercat" class="filterType filter2 " onchange="this.form.submit()">
+
+                <option value="none" <% if (filtercat === 'none') { %> selected <% } %>>ALL</option>
+                <%if (filterType==="income"||filterType==="none"){%>
+            <option value="Salary" <% if (filtercat === 'Salary') { %> selected <% } %>>Salary</option>
+            <option value="Wages" <% if (filtercat === 'Wages') { %> selected <% } %>>Wages</option>
+            <option value="Bonus" <% if (filtercat === 'Bonus') { %> selected <% } %>>Bonus</option>
+            <option value="Freelance" <% if (filtercat === 'Freelance') { %> selected <% } %>>Freelance</option>
+            <option value="Rental" <% if (filtercat === 'Rental') { %> selected <% } %>>Rental</option>
+            <option value="Refunds" <% if (filtercat === 'Refunds') { %> selected <% } %>>Refunds</option>
+            <%}%>
+
+            <%if (filterType==="Expense"||filterType==="none"){%>
+                <option value="Rent" <% if (filtercat === 'Rent') { %> selected <% } %>>Rent</option>
+                <option value="Entertainment" <% if (filtercat === 'Entertainment') { %> selected <% } %>>Entertainment</option>
+                <option value="Medical" <% if (filtercat === 'Medical') { %> selected <% } %>>Medical</option>
+                <option value="Food" <% if (filtercat === 'Food') { %> selected <% } %>>Food</option>
+                <option value="Grocery" <% if (filtercat === 'Grocery') { %> selected <% } %>>Grocery</option>
+                <option value="Transport" <% if (filtercat === 'Transport') { %> selected <% } %>>Transport</option>
+                <option value="Utilities" <% if (filtercat === 'Utilities') { %> selected <% } %>>Utilities</option>
+            <%}%>
+            <option value="Gifts" <% if (filtercat === 'Gifts') { %> selected <% } %>>Gifts</option>
+            <option value="Others" <% if (filtercat === 'Others') { %> selected <% } %>>Others</option>
              </select>
 
         <label for="filterChoice" style="color: rgb(255, 255, 255);">Choose Date :</label>
