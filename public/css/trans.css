@@ -42,6 +42,13 @@ select{
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
+    color: azure;
+    background-color: rgb(91, 0, 179);
+    margin-right: 0.5px;
+    margin: 2px;
+    margin-bottom: 5px;
+    margin-bottom: 0;
+    border:none;
 }
 .actions form{
     display: inline;

@@ -59,10 +59,10 @@
         <% if(filterChoice==='custom'){%> 
             <div class="custom-filter ">
                 
-                    <input type="hidden" name="filtercustom" value="custom" >
-                    <input type="date" name="start_date" value="<%= start_date %>">
-                    <input type="date" name="end_date" value="<%= end_date %>">
-                    <button type="submit">Apply</button>
+                    <input class="custom-filter "type="hidden" name="filtercustom" value="custom" >
+                    <input class="custom-filter "type="date" name="start_date" value="<%= start_date %>">
+                    <input class="custom-filter "type="date" name="end_date" value="<%= end_date %>">
+                    <button class="custom-filter" type="submit">Apply</button>
                 
             </div>
         <% } %>

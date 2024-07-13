@@ -10,7 +10,7 @@
 <body>
     <%- include("../includes/nav2.ejs",{username:transaction.username}) %>
     <div class="container">
-        <h1 style="text-align: center;color: rgb(91, 0, 176);">Transaction Details</h1>
+        <h1 style="text-align: center;color: rgb(91, 0, 176);font-size: 320%;">Transaction Details</h1>
         <br>
         <h4><span class="subhead">Date : </span>  <%=transaction.date.toISOString().split('T')[0]%></h4>
         <h4><span class="subhead">Type : </span>  <%=transaction.type%> </h4>
@@ -20,8 +20,8 @@
         
         <br>
         <% if(transaction.desc!==undefined){%>
-            <h4 style="color: rgb(91, 0, 175);">Short Description</h4>
-            <h4><%=transaction.desc%></h4>
+            <h4 class="subhead" style="color: rgb(91, 0, 175);">Short Description</h4>
+            <h4 class="subhead" style="color: azure;"><%=transaction.desc%></h4>
         <%}%>
     </div>
 </body>

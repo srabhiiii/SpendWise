@@ -16,21 +16,21 @@
     <div class="mainline">
         <h1 ><%=username%>'s Transaction Analysis</h1>
     </div>
-    <div class="filter">
+    <div class="filter" >
         <form method="get" action="/<%=username%>/analytics">
-        <select id="fliterChoice" name="filterChoice" class="filterChoice" onchange="this.form.submit()">
+        <select id="fliterChoice" style="background-color:rgb(91, 0, 175);color: aliceblue;" name="filterChoice" class="filterChoice" onchange="this.form.submit()">
             <option value="none" <% if (filterChoice === 'none') { %> selected <% } %>>ALL</option>
         <option value="7" <% if (filterChoice === '7') { %> selected <% } %>>Last 1 week</option>
         <option value="30" <% if (filterChoice === '30') { %> selected <% } %>>Last 1 month</option>
         <option value="365" <% if (filterChoice === '365') { %> selected <% } %>>Last 1 year</option>
         <option value="custom" <% if (filterChoice === 'custom') { %> selected <% } %>>custom</option>
         <% if(filterChoice==='custom'){%> 
-            <div>
+            <div >
                 
-                    <input type="hidden" name="filtercustom" value="custom" >
-                    <input type="date" name="start_date" value="<%= start_date %>">
-                    <input type="date" name="end_date" value="<%= end_date %>">
-                    <button type="submit">Apply</button>
+                    <input class="custom-filter "type="hidden" name="filtercustom" value="custom" >
+                    <input class="custom-filter "type="date" name="start_date" value="<%= start_date %>">
+                    <input class="custom-filter "type="date" name="end_date" value="<%= end_date %>">
+                    <button class="custom-filter "type="submit">Apply</button>
                 
             </div>
         <% } %>
@@ -134,68 +134,69 @@
 <div class="otherprog progress-main">
    
     <h1 class="heading">EXPENSE</h1>
+ 
 
     <div class="expenseanal">
-
+        <br>
         <% if(expensetran.length!=0){ %>
         <%if(rentper!=0){%>
-            <label for="rent">Rent</label>
+            <label for="rent">Rent :<%=rentper%>%</label>
             <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
             <div id="rent"class="progress-bar bg-danger" style="width:<%=rentper%>%"></div>
             </div>
         <%}%>
 
     <%if(enterper!=0){%>
-    <label for="entertainment">Entertainment</label>
+    <label for="entertainment">Entertainment :<%=enterper%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="entertainment"class="progress-bar bg-danger" style="width: <%=enterper%>%"></div>
     </div>
     <%}%>
 
     <%if(medper!=0){%>
-        <label for="medical">Medical</label>
+        <label for="medical">Medical :<%=medper%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="medical"class="progress-bar bg-danger" style="width: <%=medper%>%"></div>
         </div>
     <%}%>
 
     <%if(foodper!=0){%>
-        <label for="food">Food</label>
+        <label for="food">Food :<%=foodper%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="food"class="progress-bar bg-danger" style="width: <%=foodper%>%"></div>
         </div>
     <%}%>
 
     <%if(groceryper!=0){%>
-        <label for="grocery">Grocery</label>
+        <label for="grocery">Grocery :<%=groceryper%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="grocery"class="progress-bar bg-danger" style="width: <%=groceryper%>%"></div>
         </div>
     <%}%>
 
     <%if(transper!=0){%>
-        <label for="trans">Transport</label>
+        <label for="trans">Transport :<%=transper%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="trans"class="progress-bar bg-danger" style="width: <%=transper%>%"></div>
         </div>
     <%}%>
 
     <%if(g1per!=0){%>
-        <label for="g1">Gifts</label>
+        <label for="g1">Gifts :<%=g1per%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="g1"class="progress-bar bg-danger" style="width: <%=g1per%>%"></div>
         </div>
     <%}%>
 
     <%if(uper!=0){%>
-        <label for="u">Utilities</label>
+        <label for="u">Utilities :<%=uper%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="u"class="progress-bar bg-danger" style="width: <%=uper%>%"></div>
         </div>
     <%}%>
 
     <%if(o1per!=0){%>
-        <label for="o1">Others</label>
+        <label for="o1">Others :<%=o1per%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="o1"class="progress-bar bg-danger" style="width: <%=o1per%>%"></div>
         </div>
@@ -209,59 +210,60 @@
 
 <div class="otherprog progress-main">
 <h1 class="heading">INCOME</h1>
+<br>
 <% if(incometran.length!=0){ %>
 <div class="incomeanal">
     <%if(salper!=0){%>
-        <label for="salary">Salary</label>
+        <label for="salary">Salary :<%=salper%>%</label>
         <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
         <div id="salary"class="progress-bar bg-success" style="width: <%=salper%>%"></div>
         </div>
     <%}%>
 
 <%if(wper!=0){%>
-<label for="wage">Wages</label>
+<label for="wage">Wages :<%=wper%>%</label>
 <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 <div id="wage"class="progress-bar bg-success" style="width: <%=wper%>%"></div>
 </div>
 <%}%>
 
 <%if(bper!=0){%>
-    <label for="bonus">Bonus</label>
+    <label for="bonus">Bonus :<%=bper%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="bonus"class="progress-bar bg-success" style="width: <%=bper%>%"></div>
     </div>
 <%}%>
 
 <%if(fper!=0){%>
-    <label for="freelance">Freelance</label>
+    <label for="freelance">Freelance :<%=fper%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="freelance"class="progress-bar bg-success" style="width: <%=fper%>%"></div>
     </div>
 <%}%>
 
 <%if(rper!=0){%>
-    <label for="rental">Rental</label>
+    <label for="rental">Rental :<%=rper%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="rental"class="progress-bar bg-success" style="width: <%=rper%>%"></div>
     </div>
 <%}%>
 
 <%if(refper!=0){%>
-    <label for="refunds">Transport</label>
+    <label for="refunds">Transport :<%=refper%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="refunds"class="progress-bar bg-success" style="width: <%=refper%>%"></div>
     </div>
 <%}%>
 
 <%if(g2per!=0){%>
-    <label for="g1">Gifts</label>
+    <label for="g1">Gifts :<%=g2per%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="g1"class="progress-bar bg-success" style="width: <%=g1per%>%"></div>
     </div>
 <%}%>
 
 <%if(o2per!=0){%>
-    <label for="o2">Others</label>
+    <label for="o2">Others :<%=o2per%>%</label>
     <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
     <div id="o2"class="progress-bar bg-success" style="width: <%=o2per%>%"></div>
     </div>

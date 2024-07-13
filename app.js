@@ -81,18 +81,6 @@ app.get("/", (req, res) => {
     res.render("layouts/landingpage"); // Ensure this path is correct
 });
 
-/*
-app.post("/login", (req, res) => {
-    const input = req.body;
-    User.findOne({ username: input.username }, (err, profile) => {
-        if (err) {
-            console.log(err);
-        } else {
-            // Add your login logic here
-        }
-    });
-});
-*/
 //login code
 app.get("/login",(req,res)=>{
     res.render("../views/layouts/login.ejs");
@@ -104,8 +92,12 @@ app.post("/login",passport.authenticate("local",{failureRedirect:"/login",failur
         console.log(username);
         res.redirect(`/${username}/dashboard`);
     }catch(err){
-        req.flash("error",err.message);
-        req.redirect("/login");
+        if(!req.headerSent){
+            req.flash("error",err.message);
+            res.redirect("/login");
+        }else{
+            console.log("multiple headers sent");
+        }
     }
     
 })
@@ -124,8 +116,9 @@ app.post("/signup", async(req,res)=>{
         if(err){
             next(err);
         }
+        res.redirect(`/${username}/dashboard`);
     });
-    res.redirect(`/${username}/dashboard`);
+   
     }catch(err){
         console.log("username already exists");
         req.flash("error",err.message);
@@ -286,20 +279,32 @@ app.get("/:username/addinc",isloggedin,(req,res)=>{
     res.render("../views/layouts/addinc.ejs",{username:username});
 });
 app.post("/:username/addexp",async (req,res)=>{
-    const username=req.params.username;
-    console.log(username);
-    const newlist=new Trans({...req.body.Trans,username:username,type:"Expense"});
-    await newlist.save();
-    console.log("data saved");
-    res.redirect(`/${username}/dashboard`);
+    try{
+        const username=req.params.username;
+        console.log(username);
+        const newlist=new Trans({...req.body.Trans,username:username,type:"Expense"});
+        await newlist.save();
+        console.log("data saved");
+        res.redirect(`/${username}/dashboard`);
+    }catch(err){
+        req.flash("error",err.message);
+        res.redirect(`/${req.params.username}/addexp`);
+    }
+    
 });
 app.post("/:username/addinc",async (req,res)=>{
-    const username=req.params.username;
-    console.log(username);
-    const newlist=new Trans({...req.body.Trans,username:username,type:"income"});
-    await newlist.save();
-    console.log("data saved");
-    res.redirect(`/${username}/dashboard`);
+    try{
+        const username=req.params.username;
+        console.log(username);
+        const newlist=new Trans({...req.body.Trans,username:username,type:"income"});
+        await newlist.save();
+        console.log("data saved");
+        res.redirect(`/${username}/dashboard`);
+    }catch(err){
+        req.flash("error",err.message);
+        res.redirect(`/${req.params.username}/addinc`);
+    }
+    
 });
 
 app.get("/:username/:transid",isloggedin,async (req,res)=>{
@@ -322,6 +327,7 @@ app.post("/:username/:transid",async(req,res)=>{
     await Trans.findByIdAndDelete(req.params.transid);
     res.redirect(`/${req.params.username}/transactions`);
 });
+
 
 
 app.listen(8000, () => {
