@@ -62,4 +62,26 @@ select{
     margin-top: 15%;
     color: rgb(91, 0, 176);
 }
+@media (max-width: 768px) {
+    .viewtrans {
+        width: 95%; 
+    }
 
+    .mainline {
+        margin-top: 15%;
+        margin-bottom: 3%;
+    }
+
+    .filter {
+        margin: 5%;
+    }
+
+    select,
+    .custom-filter {
+        width: 100%; 
+    }
+
+    .norec {
+        margin-top: 10%; /* Adjust margin for smaller screens */
+    }
+}

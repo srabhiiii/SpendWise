@@ -1,6 +1,4 @@
-.navbar{
-    height: 50px;
-}
+
 .custom-btn{
     margin-right:30px;
    
@@ -23,8 +21,16 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column; 
-    margin-top: 5%;
-   
+    margin:5%;
+
+    margin-top: 10%;
 }
+@media (max-width: 768px){
+    .info{
+        margin-top:15%;
+    }
+    
+}
+    
    
 
