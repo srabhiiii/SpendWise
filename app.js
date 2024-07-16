@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const ejsMate = require("ejs-mate");
 const path = require("path");
@@ -15,11 +16,11 @@ const router=express.Router();
 const app = express();
 
 // Setting up the database
-const mongo_url = "mongodb://127.0.0.1:27017/Expense_Manager";
+const mongo_url = process.env.ATLASDB_URL;
 
 async function main() {
     await mongoose.connect(mongo_url);
-    console.log("Database connected");
+    //console.log("Database connected");
 }
 
 main().catch((err) => {
@@ -28,14 +29,14 @@ main().catch((err) => {
 
 // Setting up authentication
 const sessionOptions = {
-    secret: 'yourSecretKey', // Change this to a strong secret key
+    secret: 'yourSecretKey', 
     resave: false,
     saveUninitialized: false,
-    store:MongoStore.create({//this is so that session persists even after refreshing 
+    store:MongoStore.create({
         mongoUrl:mongo_url,
         collectionName:'sessions'
     }),
-    cookie: { secure: false } // Set secure to true if using HTTPS
+    cookie: { secure: false } 
 };
 
 app.use(session(sessionOptions));
