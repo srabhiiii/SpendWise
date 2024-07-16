@@ -29,14 +29,14 @@ main().catch((err) => {
 
 // Setting up authentication
 const sessionOptions = {
-    secret: 'Secret', 
+    secret: process.env.SECRET, 
     resave: false,
     saveUninitialized: false,
     store:MongoStore.create({
         mongoUrl:mongo_url,
         collectionName:'sessions',
         crypto: {
-            secret:'Secret',
+            secret:process.env.SECRET,
         },
         touchAfter: 24*3600,
 
