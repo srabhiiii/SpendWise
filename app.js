@@ -29,14 +29,23 @@ main().catch((err) => {
 
 // Setting up authentication
 const sessionOptions = {
-    secret: 'yourSecretKey', 
+    secret: 'Secret', 
     resave: false,
     saveUninitialized: false,
     store:MongoStore.create({
         mongoUrl:mongo_url,
-        collectionName:'sessions'
+        collectionName:'sessions',
+        crypto: {
+            secret:'Secret',
+        },
+        touchAfter: 24*3600,
+
     }),
-    cookie: { secure: false } 
+    cookie: { 
+        expires:Date.now()+7*24*60*60*1000,
+        maxAge:7*24*60*60*1000,
+        httpOnly:true,
+    },
 };
 
 app.use(session(sessionOptions));
